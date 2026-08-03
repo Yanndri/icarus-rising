@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://bocyxixfmquy2"]
+
+[ext_resource type="PackedScene" uid="uid://cm00bsdbvlko4" path="res://icarus.tscn" id="1_ig7tw"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_0xm2m"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_h2yge"]
+sky_material = SubResource("ProceduralSkyMaterial_0xm2m")
+
+[sub_resource type="Environment" id="Environment_1bvp3"]
+background_mode = 2
+sky = SubResource("Sky_h2yge")
+
+[sub_resource type="BoxMesh" id="BoxMesh_oxdc4"]
+size = Vector3(200, 0.2, 200)
+
+[node name="Main" type="Node3D" unique_id=2015226578]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=37053950]
+texture_filter = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=2124226524]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1280, 720)
+size_2d_override_stretch = true
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="SubViewportContainer/SubViewport" unique_id=315045155]
+transform = Transform3D(1, 0, 0, 0, 0.94017315, 0.3406971, 0, -0.3406971, 0.94017315, 0, 2.1698198, -3.9994264)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport" unique_id=705324290]
+environment = SubResource("Environment_1bvp3")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport" unique_id=94424853]
+transform = Transform3D(-0.74594307, -0.38241982, 0.54527426, 0.60783446, -0.056261152, 0.79206824, -0.27222484, 0.92227423, 0.27441552, 0, 0, 0)
+shadow_enabled = true
+shadow_bias = 0.2
+shadow_opacity = 0.8
+directional_shadow_mode = 1
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SubViewportContainer/SubViewport" unique_id=1454599951]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.38123202, 0)
+mesh = SubResource("BoxMesh_oxdc4")
+
+[node name="Icarus" parent="SubViewportContainer/SubViewport" unique_id=503997800 instance=ExtResource("1_ig7tw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5.5780497)

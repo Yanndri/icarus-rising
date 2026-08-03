@@ -1,0 +1,72 @@
+[gd_scene format=4 uid="uid://cm00bsdbvlko4"]
+
+[ext_resource type="Texture2D" uid="uid://d1wji0orik08r" path="res://Assets/wings1_01_-_Default_baseColor.png" id="1_novsu"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o82l1"]
+resource_name = "01_-_Default.001"
+transparency = 4
+cull_mode = 2
+albedo_texture = ExtResource("1_novsu")
+roughness = 0.89297134
+metadata/_gltf_primary_texture_coord = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_42e20"]
+_surfaces = [{
+"aabb": AABB(-0.45368358, -0.00070015754, 0.0002641678, 0.90736717, 0.001400315, 1.0911475),
+"format": 34896613377,
+"index_count": 12,
+"index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUA"),
+"name": "01_-_Default.001",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 8,
+"vertex_data": PackedByteArray("//8IAAAAAAAAAAAA//8AAP//AAD//wAAAAAIAAAAAAAAAP//AAAAAP//9v///wAAAAD2////AAD/////AAAAAA==")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_7o3co"]
+resource_name = "wings1_LW_01 - Default_0_001"
+_surfaces = [{
+"aabb": AABB(-0.45368358, -0.00070015754, 0.0002641678, 0.90736717, 0.001400315, 1.0911475),
+"attribute_data": PackedByteArray("foFpF36BaReSDTz3kg08936BPPd+gTz3kg1pF5INaReSDWkXkg1pF36BPPd+gTz3kg0895INPPd+gWkXfoFpFw=="),
+"format": 34896613431,
+"index_count": 12,
+"index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUA"),
+"material": SubResource("StandardMaterial3D_o82l1"),
+"name": "01_-_Default.001",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 8,
+"vertex_data": PackedByteArray("//8IAAAA/z8AAAAA////P///AAD///8/AAAIAAAA/z8AAP//AAD/v///9v////+/AAD2/////7//////AAD/vwAA/38AAP9/AAD/fwAA/3////9/////f////3////9/")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_42e20")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_novsu"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ptkwr"]
+material = SubResource("StandardMaterial3D_novsu")
+top_radius = 0.1
+bottom_radius = 0.2
+height = 0.8
+
+[node name="Icarus" type="Node3D" unique_id=503997800]
+
+[node name="WingRight" type="Node3D" parent="." unique_id=1107075150]
+transform = Transform3D(1, 0, 0, 0, -4.371138e-08, 0.9999998, 0, -0.9999998, -4.371138e-08, 0, 0, 0)
+
+[node name="WingRightModel" type="MeshInstance3D" parent="WingRight" unique_id=1809167267]
+transform = Transform3D(1, 0, 0, 0, 0.9999999, -3.5527137e-15, 0, 3.5527137e-15, 0.9999999, -0.45849285, 0, 0)
+mesh = SubResource("ArrayMesh_7o3co")
+
+[node name="WingRight2" type="Node3D" parent="." unique_id=1093872456]
+transform = Transform3D(1, 0, 0, 0, -4.371138e-08, 0.9999998, 0, -0.9999998, -4.371138e-08, 0, 0, 0)
+
+[node name="WingRightModel" type="MeshInstance3D" parent="WingRight2" unique_id=203979230]
+transform = Transform3D(-1, 1.5099577e-07, 0, -1.509958e-07, -0.9999998, 0, 0, 0, 0.9999998, 0.46132073, 0, 0)
+mesh = SubResource("ArrayMesh_7o3co")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=535314381]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.27505893, -0.16474265)
+mesh = SubResource("CylinderMesh_ptkwr")
