@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://d1vempyto6yf2"]
+
+[node name="TemplateButton" type="Button" unique_id=77683595]
+offset_right = 62.0
+offset_bottom = 31.0
+text = "Button"

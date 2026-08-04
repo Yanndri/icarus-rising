@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dwse7cch5agwn"]
 
 [ext_resource type="Script" uid="uid://combrvqa32q8w" path="res://Scripts/next_level.gd" id="1_1piei"]
+[ext_resource type="PackedScene" uid="uid://d1vempyto6yf2" path="res://Scenes/template_button.tscn" id="2_ycv7e"]
 
 [node name="Next Level" type="Control" unique_id=121335714]
 layout_mode = 3
@@ -25,19 +26,17 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Next Level Button" type="Button" parent="VBoxContainer" unique_id=473236566]
+[node name="Next Level Button" parent="VBoxContainer" unique_id=77683595 instance=ExtResource("2_ycv7e")]
 layout_mode = 2
-theme_override_font_sizes/font_size = 32
 text = "Next Level"
 
-[node name="Restart Button2" type="Button" parent="VBoxContainer" unique_id=4040528]
+[node name="Restart Button" parent="VBoxContainer" unique_id=790256858 instance=ExtResource("2_ycv7e")]
 layout_mode = 2
-theme_override_font_sizes/font_size = 32
 text = "Restart"
 
-[node name="Exit Button" type="Button" parent="VBoxContainer" unique_id=1396792832]
+[node name="Exit Button" parent="VBoxContainer" unique_id=2126972210 instance=ExtResource("2_ycv7e")]
 layout_mode = 2
-theme_override_font_sizes/font_size = 32
-text = "Exit"
+text = "Exit
+"
 
 [connection signal="pressed" from="VBoxContainer/Next Level Button" to="." method="_on_next_level_button_pressed"]

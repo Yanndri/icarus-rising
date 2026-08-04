@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://b4kywdqkwvgf5"]
 
 [ext_resource type="Script" uid="uid://b54777dfc4pxg" path="res://Scripts/main_menu.gd" id="1_28flt"]
+[ext_resource type="PackedScene" uid="uid://d1vempyto6yf2" path="res://Scenes/template_button.tscn" id="2_48xlc"]
 
 [node name="MainMenu" type="Control" unique_id=1580353932]
 layout_mode = 3
@@ -11,18 +12,17 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_28flt")
 
-[node name="StartButton" type="Button" parent="." unique_id=382448219]
+[node name="TemplateButton" parent="." unique_id=77683595 instance=ExtResource("2_48xlc")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -23.0
+offset_left = -31.0
 offset_top = -15.5
-offset_right = 23.0
+offset_right = 31.0
 offset_bottom = 15.5
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 100
 text = "Start"
