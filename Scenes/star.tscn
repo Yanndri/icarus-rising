@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://d2gl6h1krg4ci"]
+
+[ext_resource type="Texture2D" uid="uid://2i747f13latj" path="res://Assets/Stars/Stars1.png" id="1_d0spr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_star"]
+size = Vector2(32, 32)
+
+[node name="Star" type="RigidBody2D" unique_id=593287218]
+gravity_scale = 0.0
+contact_monitor = true
+max_contacts_reported = 4
+
+[node name="StarIcon" type="Sprite2D" parent="." unique_id=2091828766]
+unique_name_in_owner = true
+texture = ExtResource("1_d0spr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1574542609]
+unique_name_in_owner = true
+shape = SubResource("RectangleShape2D_star")
