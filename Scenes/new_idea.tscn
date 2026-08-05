@@ -4,35 +4,90 @@
 [ext_resource type="Texture2D" uid="uid://2i747f13latj" path="res://Assets/Stars/Stars1.png" id="2_letu0"]
 [ext_resource type="Script" uid="uid://8m4xm043fj5h" path="res://Scripts/player_look_3d.gd" id="2_player_look"]
 [ext_resource type="Texture2D" uid="uid://c4kg8q8mauxgb" path="res://Assets/Stars/Stars3.png" id="3_i38uf"]
+[ext_resource type="Script" uid="uid://dm04mp5l87bcf" path="res://Scripts/star_scatter_3d.gd" id="4_star_scatter"]
+
+[sub_resource type="Sky" id="Sky_i38uf"]
+
+[sub_resource type="Environment" id="Environment_p00ms"]
+background_mode = 2
+sky = SubResource("Sky_i38uf")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_spawn_box"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.2, 0.69803923, 1, 0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_spawn_box"]
+size = Vector3(30, 20, 30)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ptkwr"]
+size = Vector3(0.5, 0.5, 0.5)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ptkwr"]
+size = Vector2(100, 100)
 
 [node name="NewIdea" type="Node3D" unique_id=314686990]
 
-[node name="Sprite3D1" type="Sprite3D" parent="." unique_id=1463562242]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.9170036, 1.8445362)
-billboard = 1
-texture_filter = 0
-texture = ExtResource("1_gsj48")
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1712625172]
+environment = SubResource("Environment_p00ms")
 
-[node name="Sprite3D2" type="Sprite3D" parent="." unique_id=929700568]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.91063, 0)
-billboard = 1
-texture_filter = 0
-texture = ExtResource("1_gsj48")
-
-[node name="Sprite3D3" type="Sprite3D" parent="." unique_id=1772139569]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.16210032, 8.160476)
-billboard = 1
-texture_filter = 0
-texture = ExtResource("2_letu0")
-
-[node name="Sprite3D4" type="Sprite3D" parent="." unique_id=111875412]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.16210032, -7.469945)
-billboard = 1
-texture_filter = 0
-texture = ExtResource("3_i38uf")
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=88866995]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
 
 [node name="Player" type="Node3D" parent="." unique_id=705048839]
 script = ExtResource("2_player_look")
 
 [node name="Camera3D" type="Camera3D" parent="Player" unique_id=963286351]
 current = true
+
+[node name="StarSpawner" type="Node3D" parent="." unique_id=900260432]
+script = ExtResource("4_star_scatter")
+copies_per_star = 20
+
+[node name="SpawnBox" type="MeshInstance3D" parent="StarSpawner" unique_id=900260433]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.856886, 0)
+material_override = SubResource("StandardMaterial3D_spawn_box")
+cast_shadow = 0
+mesh = SubResource("BoxMesh_spawn_box")
+
+[node name="StarTemplate" type="RigidBody3D" parent="StarSpawner" unique_id=1255216284]
+gravity_scale = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StarSpawner/StarTemplate" unique_id=622833427]
+shape = SubResource("BoxShape3D_ptkwr")
+
+[node name="StarIcon" type="Sprite3D" parent="StarSpawner/StarTemplate" unique_id=1698776521]
+billboard = 1
+texture_filter = 0
+texture = ExtResource("3_i38uf")
+
+[node name="StarsExample" type="Node3D" parent="." unique_id=1133433397]
+
+[node name="Stars1" type="Sprite3D" parent="StarsExample" unique_id=1463562242]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.9170036, 1.8445362)
+billboard = 1
+texture_filter = 0
+texture = ExtResource("1_gsj48")
+
+[node name="Stars2" type="Sprite3D" parent="StarsExample" unique_id=929700568]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9365258, -4.91063, 2.6699357)
+billboard = 1
+texture_filter = 0
+texture = ExtResource("1_gsj48")
+
+[node name="Stars3" type="Sprite3D" parent="StarsExample" unique_id=1772139569]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.16210032, 8.160476)
+billboard = 1
+texture_filter = 0
+texture = ExtResource("2_letu0")
+
+[node name="Stars4" type="Sprite3D" parent="StarsExample" unique_id=111875412]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.16210032, -7.469945)
+billboard = 1
+texture_filter = 0
+texture = ExtResource("3_i38uf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=2088946954]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.93735886, 0)
+mesh = SubResource("PlaneMesh_ptkwr")
