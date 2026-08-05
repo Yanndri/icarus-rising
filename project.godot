@@ -10,8 +10,8 @@ config_version=5
 
 [application]
 
-config/name="Icarus Rising"
-run/main_scene="uid://bocyxixfmquy2"
+config/name="Star Match (GoEdwareJam)"
+run/main_scene="uid://dilgq8782r4gv"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
