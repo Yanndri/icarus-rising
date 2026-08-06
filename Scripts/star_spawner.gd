@@ -108,6 +108,7 @@ func _on_star_body_entered(other_body: Node2D, star: RigidBody2D) -> void:
 
 	star.queue_free()
 	other_star.queue_free()
+	StarBank.add_stars(1)
 	call_deferred("_check_level_complete")
 
 

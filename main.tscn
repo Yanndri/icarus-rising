@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://bocyxixfmquy2"]
 
 [ext_resource type="Script" uid="uid://cxia1xaxcxkul" path="res://Scripts/star_spawner.gd" id="1_star_spawner"]
+[ext_resource type="Script" uid="uid://b38cp5pqpaell" path="res://Scripts/stars_count_label.gd" id="2_0xm2m"]
+[ext_resource type="FontFile" uid="uid://pevnfl22fqjw" path="res://Assets/fonts/hand2.ttf" id="2_h2yge"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ptkwr"]
 size = Vector2(20, 720)
@@ -40,3 +42,12 @@ position = Vector2(0, -360)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/Border4" unique_id=1034615956]
 shape = SubResource("RectangleShape2D_ig7tw")
+
+[node name="Label" type="Label" parent="." unique_id=503114711]
+offset_left = 28.0
+offset_top = 22.0
+offset_right = 230.0
+offset_bottom = 170.0
+theme_override_fonts/font = ExtResource("2_h2yge")
+theme_override_font_sizes/font_size = 32
+script = ExtResource("2_0xm2m")
