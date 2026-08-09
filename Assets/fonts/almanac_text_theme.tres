@@ -1,0 +1,23 @@
+[gd_resource type="Theme" format=3 uid="uid://dn5rpshj3jm0g"]
+
+[ext_resource type="FontFile" uid="uid://dfy6gj18e5opf" path="res://Assets/fonts/hand2.ttf" id="1_5rvt0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qbac7"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_stduc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nobyi"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5rvt0"]
+
+[resource]
+Button/colors/font_color = Color(0, 0, 0, 1)
+Button/font_sizes/font_size = 25
+Button/fonts/font = ExtResource("1_5rvt0")
+Button/styles/focus = SubResource("StyleBoxEmpty_qbac7")
+Button/styles/hover = SubResource("StyleBoxEmpty_stduc")
+Button/styles/normal = SubResource("StyleBoxEmpty_nobyi")
+Button/styles/pressed = SubResource("StyleBoxEmpty_5rvt0")
+Label/colors/font_color = Color(0, 0, 0, 1)
+Label/font_sizes/font_size = 25
+Label/fonts/font = ExtResource("1_5rvt0")

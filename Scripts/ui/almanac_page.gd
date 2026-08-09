@@ -7,6 +7,9 @@ enum PageMode { BEHAVIOR, SKY }
 @export var clue_names: Array[String] = []
 @export var clue_descriptions: Array[String] = []
 
+@export var clue_images: Array[Texture2D] = []
+@onready var _description_image: TextureRect = %DescriptionImage
+
 @onready var _clue_list: Container = %ClueList
 @onready var _candidate_list: Container = %CandidateList
 @onready var _description_label: Label = %DescriptionLabel
@@ -24,9 +27,11 @@ func _use_default_clue_pool() -> void:
 	if page_mode == PageMode.BEHAVIOR:
 		clue_ids = ClueDefinitions.BEHAVIOR_CLUE_IDS + ClueDefinitions.BIRTH_CLUE_IDS
 		clue_names = ClueDefinitions.BEHAVIOR_CLUE_NAMES + ClueDefinitions.BIRTH_CLUE_NAMES
+		clue_descriptions = ClueDefinitions.BEHAVIOR_CLUE_DESCRIPTIONS + ClueDefinitions.BIRTH_CLUE_DESCRIPTIONS
 	else:
 		clue_ids = ClueDefinitions.SKY_CLUE_IDS
 		clue_names = ClueDefinitions.SKY_CLUE_NAMES
+		clue_descriptions = ClueDefinitions.SKY_CLUE_DESCRIPTIONS
 
 
 func _build_clue_buttons() -> void:
@@ -37,8 +42,15 @@ func _build_clue_buttons() -> void:
 		button.clue_id = clue_ids[i]
 		button.base_text = clue_names[i]
 		button.description = clue_descriptions[i] if i < clue_descriptions.size() else clue_names[i]
-		button.hovered.connect(func(desc): _description_label.text = desc)
-		button.unhovered.connect(func(): _description_label.text = "")
+		var clue_index := i
+		button.hovered.connect(func(desc):
+			_description_label.text = desc
+			_description_image.texture = clue_images[clue_index] if clue_index < clue_images.size() else null
+		)
+		button.unhovered.connect(func():
+			_description_label.text = ""
+			_description_image.texture = null
+		)
 		button.state_changed.connect(_on_clue_button_state_changed.bind(button))
 		_clue_list.add_child(button)
 

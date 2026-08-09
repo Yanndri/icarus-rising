@@ -1,8 +1,9 @@
 [gd_scene format=3 uid="uid://bw3gsqxfmuow7"]
 
+[ext_resource type="Theme" uid="uid://dn5rpshj3jm0g" path="res://Assets/fonts/almanac_text_theme.tres" id="1_f7wfu"]
 [ext_resource type="Script" uid="uid://n7iwucg5wrt8" path="res://Scripts/ui/almanac_page.gd" id="1_nnki8"]
 [ext_resource type="Texture2D" uid="uid://ra5n1xnpsp6" path="res://Assets/Ui/booky.png" id="2_q4k0i"]
-[ext_resource type="FontFile" uid="uid://pevnfl22fqjw" path="res://Assets/fonts/hand2.ttf" id="3_wjlyb"]
+[ext_resource type="FontFile" uid="uid://dfy6gj18e5opf" path="res://Assets/fonts/hand2.ttf" id="3_wjlyb"]
 [ext_resource type="LabelSettings" uid="uid://dt78b1es013dt" path="res://Data/fonts/Black40PXhandwritten.tres" id="4_f2qqr"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_q4k0i"]
@@ -22,6 +23,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_f7wfu")
 script = ExtResource("1_nnki8")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=650115472]
@@ -45,15 +47,18 @@ metadata/_edit_group_ = true
 layout_mode = 2
 text = "Observed Trait"
 label_settings = SubResource("LabelSettings_q4k0i")
-autowrap_trim_flags = 128
 
 [node name="ScrollContainer" type="ScrollContainer" parent="TextureRect/ClueColumn" unique_id=1377720438]
 layout_mode = 2
 size_flags_vertical = 3
+horizontal_scroll_mode = 0
 
 [node name="ClueList" type="HFlowContainer" parent="TextureRect/ClueColumn/ScrollContainer" unique_id=194414000]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 16
 
 [node name="CandidateColumn" type="VBoxContainer" parent="TextureRect" unique_id=1129858011]
 layout_mode = 0
@@ -68,21 +73,36 @@ text = "Possible Matches
 "
 label_settings = SubResource("LabelSettings_wjlyb")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="TextureRect/CandidateColumn" unique_id=1225543252]
-layout_mode = 2
+[node name="ScrollContainer" type="ScrollContainer" parent="TextureRect/CandidateColumn/Label" unique_id=1225543252]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 44.0
+offset_right = 315.0
+offset_bottom = 379.0
 size_flags_vertical = 3
 offset_transform_position = Vector2(0, 100)
 
-[node name="CandidateList" type="VBoxContainer" parent="TextureRect/CandidateColumn/ScrollContainer" unique_id=1647869596]
+[node name="CandidateList" type="HFlowContainer" parent="TextureRect/CandidateColumn/Label/ScrollContainer" unique_id=99227780]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 16
 
 [node name="DescriptionLabel" type="Label" parent="TextureRect" unique_id=235657644]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 212.0
+offset_left = 357.0
 offset_top = 323.0
 offset_right = 543.0
 offset_bottom = 490.0
 label_settings = ExtResource("4_f2qqr")
 autowrap_mode = 3
+autowrap_trim_flags = 0
+justification_flags = 162
+
+[node name="DescriptionImage" type="TextureRect" parent="TextureRect" unique_id=1368318640]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
