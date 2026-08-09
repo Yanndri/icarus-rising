@@ -19,17 +19,68 @@ extends CanvasGroup
 @export var nose_textures: Array[Texture2D] = [preload("res://Assets/NPCTextures/Noses/Nose1.png")]
 @export var eye_textures: Array[Texture2D] = [preload("res://Assets/NPCTextures/Eyes/eyes1.png")]
 @export var mouth_textures: Array[Texture2D] = [preload("res://Assets/NPCTextures/Mouths/mouth1.png")]
-@export var table_textures: Array[Texture2D] = [preload("res://Assets/NPCTextures/Tables/GoedWareTable1.png")]
 @export var hand_textures: Array[Texture2D] = [preload("res://Assets/NPCTextures/Hands/hand1.png")]
 
 var _random := RandomNumberGenerator.new()
+var _is_hovered := false
+var _dialogue_request_id := 0
+@onready var _dialogue: RichTextLabel = get_node_or_null("../MainControl/NPCDialogue/dialogue")
 
 
 func _ready() -> void:
 	_random.randomize()
 	if randomize_on_ready:
 		randomize_textures()
+	if _dialogue != null:
+		_dialogue.visible = false
+	set_process(true)
 
+
+func _process(_delta: float) -> void:
+	var hovered := _is_mouse_over_npc()
+	if hovered != _is_hovered:
+		_is_hovered = hovered
+		var group_material := material as ShaderMaterial
+		if group_material != null:
+			group_material.set_shader_parameter("highlighted", _is_hovered)
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed and _is_hovered:
+		_show_dialogue()
+		_show_hands()
+
+
+func _is_mouse_over_npc() -> bool:
+	var mouse_position := get_global_mouse_position()
+	for child in get_children():
+		var sprite := child as Sprite2D
+		if sprite == null or sprite.texture == null or not sprite.visible:
+			continue
+
+		var local_mouse_position := sprite.to_local(mouse_position)
+		var sprite_rect := Rect2(-sprite.texture.get_size() * 0.5, sprite.texture.get_size())
+		if sprite_rect.has_point(local_mouse_position):
+			return true
+	return false
+
+func _show_hands() -> void:
+	%Hand.visible = true
+
+func _show_dialogue() -> void:
+	if _dialogue == null:
+		return
+
+	_dialogue.visible = true
+	_dialogue_request_id += 1
+	var request_id := _dialogue_request_id
+	await get_tree().create_timer(3.0).timeout
+	if request_id == _dialogue_request_id:
+		_dialogue.visible = false
+
+func new_NPC() -> void:
+	randomize_textures()
+	%Hand.visible = false
 
 func randomize_textures() -> void:
 	var shared_skin_color := _random_color()
@@ -70,6 +121,5 @@ func _textures_for_part(part_name: String) -> Array[Texture2D]:
 		"Nose": return nose_textures
 		"Eyes": return eye_textures
 		"Mouth": return mouth_textures
-		"Table": return table_textures
 		"Hand": return hand_textures
 		_: return []
