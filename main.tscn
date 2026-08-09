@@ -1,229 +1,136 @@
 [gd_scene format=3 uid="uid://dpyhu5c76ui3a"]
 
-[ext_resource type="FontFile" uid="uid://pevnfl22fqjw" path="res://Assets/fonts/hand2.ttf" id="2_h2yge"]
+[ext_resource type="PackedScene" uid="uid://bw3gsqxfmuow7" path="res://Scenes/almanac_page.tscn" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://d1vempyto6yf2" path="res://Scenes/template_button.tscn" id="2_0xm2m"]
+[ext_resource type="Texture2D" uid="uid://coge81hylqnja" path="res://Assets/NPCTextures/Torsos/torso1.png" id="3_4c57u"]
+[ext_resource type="Texture2D" uid="uid://dykkscl2g7aa5" path="res://Assets/NPCTextures/Tables/GoedWareTable1.png" id="3_h2yge"]
+[ext_resource type="Shader" uid="uid://ws5f7h6gvm5d" path="res://Themes/replace_color.gdshader" id="4_dg77c"]
+[ext_resource type="Texture2D" uid="uid://bbdl6cblpyny5" path="res://Assets/NPCTextures/Hairs/hair2.png" id="5_efxa6"]
+[ext_resource type="Texture2D" uid="uid://cii8q6i1txnay" path="res://Assets/NPCTextures/Hands/hand1.png" id="5_lquwl"]
+[ext_resource type="Texture2D" uid="uid://c6fbhww6rviec" path="res://Assets/NPCTextures/Noses/Nose1.png" id="6_dg77c"]
+[ext_resource type="Texture2D" uid="uid://7g3ttw4jojrr" path="res://Assets/NPCTextures/Heads/head3.png" id="7_dg77c"]
+[ext_resource type="Texture2D" uid="uid://camdvs5xsk1g4" path="res://Assets/NPCTextures/Eyes/eyes1.png" id="7_ycdy4"]
+[ext_resource type="Texture2D" uid="uid://bjwjqw6crl8dt" path="res://Assets/NPCTextures/Mouths/mouth1.png" id="8_w48qg"]
+[ext_resource type="Script" uid="uid://b18qre51b6bcn" path="res://Scripts/npc_texture_randomizer.gd" id="9_npc_randomizer"]
 
-[sub_resource type="GDScript" id="GDScript_ig7tw"]
-script/source = "extends Node2D
-## Spawns a randomized pair of sprites for every texture in Assets/Stars.
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ptkwr"]
 
-const STAR_SCENE := preload(\"res://Scenes/star.tscn\")
-@export var NEXT_LEVEL_SCENE : PackedScene = preload(\"res://Scenes/next_level.tscn\")
+[sub_resource type="GDScript" id="GDScript_oxdc4"]
+resource_name = "BottomRightButtons"
+script/source = "extends PanelContainer
 
-@export_dir var stars_directory := \"res://Assets/Stars\"
-@export var stars_per_texture := 2
-@export var spawn_area := Rect2(0.0, 0.0, 1280.0, 720.0)
-@export var drag_bounds := Rect2(10.0, 10.0, 1260.0, 700.0)
-@export var min_scale := 0.5
-@export var max_scale := 1.0
-@export var randomize_size := true
-@export var randomize_rotation := true
-
-var _random := RandomNumberGenerator.new()
-var _dragged_star: RigidBody2D
-var _drag_offset := Vector2.ZERO
-var _level_complete_triggered := false
-
-
-func _ready() -> void:
-	_random.randomize()
-	_spawn_stars()
+@export var AlmanacFrame : Control
+func _on_almanac_button_pressed() -> void:
+	AlmanacFrame.visible = !AlmanacFrame.visible
 
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		if event.pressed:
-			CursorManager.set_clicking()
-			_start_drag(get_global_mouse_position())
-		else:
-			CursorManager.set_default()
-			if _dragged_star != null:
-				_dragged_star.freeze = false
-			_dragged_star = null
-		get_viewport().set_input_as_handled()
-	elif event is InputEventMouseMotion and _dragged_star != null:
-		var desired_position := get_global_mouse_position() - _drag_offset
-		_dragged_star.global_position = _clamp_star_position(desired_position, _dragged_star)
-		get_viewport().set_input_as_handled()
-
-func _spawn_stars() -> void:
-	var directory := DirAccess.open(stars_directory)
-	if directory == null:
-		push_warning(\"Star spawner could not open: %s\" % stars_directory)
-		return
-
-	var star_paths: Array[String] = []
-	directory.list_dir_begin()
-	var file_name := directory.get_next()
-	while file_name != \"\":
-		if not directory.current_is_dir() and file_name.get_extension().to_lower() in [\"png\", \"jpg\", \"jpeg\", \"webp\"]:
-			star_paths.append(stars_directory.path_join(file_name))
-		file_name = directory.get_next()
-	directory.list_dir_end()
-
-	star_paths.sort()
-	for star_path in star_paths:
-		var texture := load(star_path) as Texture2D
-		if texture == null:
-			push_warning(\"Star spawner could not load: %s\" % star_path)
-			continue
-
-		for _i in stars_per_texture:
-			_spawn_star(texture)
-
-
-func _spawn_star(texture: Texture2D) -> void:
-	var star := STAR_SCENE.instantiate() as RigidBody2D
-	if star == null:
-		push_warning(\"Star spawner could not instantiate the star template.\")
-		return
-
-	star.name = texture.resource_path.get_file().get_basename()
-	star.position = Vector2(
-		_random.randf_range(spawn_area.position.x, spawn_area.end.x),
-		_random.randf_range(spawn_area.position.y, spawn_area.end.y)
-	)
-	if randomize_size:
-		star.scale = Vector2.ONE * _random.randf_range(min_scale, max_scale)
-	if randomize_rotation:
-		star.rotation = _random.randf_range(0.0, TAU)
-
-	var visual := star.get_node_or_null(\"%StarIcon\") as Sprite2D
-	if visual == null:
-		push_warning(\"Star template is missing a Sprite2D child.\")
-		star.queue_free()
-		return
-	visual.texture = texture
-	star.body_entered.connect(_on_star_body_entered.bind(star))
-	add_child(star)
-
-#Function to check if the closest star is the correct matched star
-func _on_star_body_entered(other_body: Node2D, star: RigidBody2D) -> void:
-	if not is_instance_valid(star) or star.is_queued_for_deletion():
-		return
-	var other_star := other_body as RigidBody2D
-	if other_star == null or other_star.is_queued_for_deletion():
-		return
-
-	var star_visual := star.get_node_or_null(\"%StarIcon\") as Sprite2D
-	var other_visual := other_star.get_node_or_null(\"%StarIcon\") as Sprite2D
-	if star_visual == null or other_visual == null or star_visual.texture == null or other_visual.texture == null:
-		return
-	if star_visual.texture.resource_path != other_visual.texture.resource_path:
-		return
-
-	star.queue_free()
-	other_star.queue_free()
-	StarBank.add_stars(1)
-	call_deferred(\"_check_level_complete\")
-
-
-func _check_level_complete() -> void:
-	if _level_complete_triggered:
-		return
-	for child in get_children():
-		if child is RigidBody2D and not child.is_queued_for_deletion():
-			return
-
-	print(\"LEVEL COMPLETE\")
-	_level_complete_triggered = true
-	get_tree().change_scene_to_packed(NEXT_LEVEL_SCENE)
-
-
-func _start_drag(mouse_position: Vector2) -> void:
-	var stars := get_children()
-	for index in range(stars.size() - 1, -1, -1):
-		var star := stars[index] as RigidBody2D
-		if star == null:
-			continue
-
-		var local_mouse_position := star.to_local(mouse_position)
-		var visual := star.get_node_or_null(\"%StarIcon\") as Sprite2D
-		if visual == null or visual.texture == null:
-			continue
-		var texture_rect := Rect2(-visual.texture.get_size() * 0.5, visual.texture.get_size())
-		if texture_rect.has_point(local_mouse_position):
-			_dragged_star = star
-			_drag_offset = mouse_position - star.global_position
-			star.z_index = 1000
-			star.freeze = true
-			star.linear_velocity = Vector2.ZERO
-			star.angular_velocity = 0.0
-			return
-
-
-func _clamp_star_position(desired_position: Vector2, star: RigidBody2D) -> Vector2:
-	var collision_shape := star.get_node_or_null(\"%CollisionShape2D\") as CollisionShape2D
-	var rectangle := collision_shape.shape as RectangleShape2D if collision_shape != null else null
-	if rectangle == null:
-		return desired_position
-
-	var half_size := rectangle.size * 0.5 * star.scale
-	var rotation_sine := absf(sin(star.rotation))
-	var rotation_cosine := absf(cos(star.rotation))
-	var horizontal_extent := half_size.x * rotation_cosine + half_size.y * rotation_sine
-	var vertical_extent := half_size.x * rotation_sine + half_size.y * rotation_cosine
-
-	return Vector2(
-		clampf(desired_position.x, drag_bounds.position.x + horizontal_extent, drag_bounds.end.x - horizontal_extent),
-		clampf(desired_position.y, drag_bounds.position.y + vertical_extent, drag_bounds.end.y - vertical_extent)
-	)
+func _on_shuffle_button_pressed() -> void:
+	get_node(\"../../../NPCTextures\").randomize_textures()
 "
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ptkwr"]
-size = Vector2(20, 720)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ig7tw"]
-size = Vector2(1280, 20)
-
-[sub_resource type="GDScript" id="GDScript_0xm2m"]
-script/source = "extends Label
-
-func _ready() -> void:
-	StarBank.stars_changed.connect(_on_stars_changed)
-	_on_stars_changed(StarBank.total_stars)
-
-func _on_stars_changed(total: int) -> void:
-	text = \"Stars: %d\" % total
-"
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ycdy4"]
+shader = ExtResource("4_dg77c")
+shader_parameter/chosen_color = Color(0.933, 0.765, 0.604, 1)
+shader_parameter/replacement_color = Color(0.796243, 0.796243, 0.796243, 1)
+shader_parameter/tolerance = 0.04
 
 [node name="Main" type="Node2D" unique_id=1227276975]
 
-[node name="StarSpawner" type="Node2D" parent="." unique_id=1409781560]
-script = SubResource("GDScript_ig7tw")
-max_scale = 2.0
+[node name="MainCanvas" type="CanvasLayer" parent="." unique_id=268496119]
 
-[node name="Borders" type="Node2D" parent="." unique_id=1820020471]
-position = Vector2(640, 360)
+[node name="AlmanacPage" parent="MainCanvas" unique_id=1728347914 instance=ExtResource("1_ig7tw")]
+visible = false
+z_index = 50
 
-[node name="Border1" type="StaticBody2D" parent="Borders" unique_id=1544969980]
-position = Vector2(-640, 0)
+[node name="MainControl" type="Control" parent="MainCanvas" unique_id=611385282]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/Border1" unique_id=1832398242]
-shape = SubResource("RectangleShape2D_ptkwr")
+[node name="Buttons" type="MarginContainer" parent="MainCanvas/MainControl" unique_id=894811388]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
 
-[node name="Border2" type="StaticBody2D" parent="Borders" unique_id=43242011]
-position = Vector2(640, 0)
+[node name="BottomRight" type="PanelContainer" parent="MainCanvas/MainControl/Buttons" unique_id=1030723733 node_paths=PackedStringArray("AlmanacFrame")]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_ptkwr")
+script = SubResource("GDScript_oxdc4")
+AlmanacFrame = NodePath("../../../AlmanacPage")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/Border2" unique_id=632006488]
-shape = SubResource("RectangleShape2D_ptkwr")
+[node name="VBoxContainer" type="VBoxContainer" parent="MainCanvas/MainControl/Buttons/BottomRight" unique_id=196568985]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
 
-[node name="Border3" type="StaticBody2D" parent="Borders" unique_id=1783719958]
-position = Vector2(0, 360)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/Border3" unique_id=458153861]
-shape = SubResource("RectangleShape2D_ig7tw")
-
-[node name="Border4" type="StaticBody2D" parent="Borders" unique_id=661180396]
-position = Vector2(0, -360)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/Border4" unique_id=1034615956]
-shape = SubResource("RectangleShape2D_ig7tw")
-
-[node name="Label" type="Label" parent="." unique_id=503114711]
-offset_left = 28.0
-offset_top = 22.0
-offset_right = 230.0
-offset_bottom = 170.0
-theme_override_fonts/font = ExtResource("2_h2yge")
+[node name="Shuffle Button" parent="MainCanvas/MainControl/Buttons/BottomRight/VBoxContainer" unique_id=77683595 instance=ExtResource("2_0xm2m")]
+layout_mode = 2
 theme_override_font_sizes/font_size = 32
-script = SubResource("GDScript_0xm2m")
+text = "Shuffle"
+
+[node name="Almanac Button2" parent="MainCanvas/MainControl/Buttons/BottomRight/VBoxContainer" unique_id=943048368 instance=ExtResource("2_0xm2m")]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Almanac"
+
+[node name="NPCTextures" type="CanvasGroup" parent="MainCanvas" unique_id=1239891217]
+script = ExtResource("9_npc_randomizer")
+
+[node name="Torso" type="Sprite2D" parent="MainCanvas/NPCTextures" unique_id=1511716083]
+material = SubResource("ShaderMaterial_ycdy4")
+position = Vector2(656, 528)
+texture = ExtResource("3_4c57u")
+
+[node name="Hair" type="Sprite2D" parent="MainCanvas/NPCTextures" unique_id=83792131]
+material = SubResource("ShaderMaterial_ycdy4")
+position = Vector2(664.5225, 291.15955)
+rotation = -0.0031445238
+texture = ExtResource("5_efxa6")
+
+[node name="Head" type="Sprite2D" parent="MainCanvas/NPCTextures" unique_id=1620208793]
+material = SubResource("ShaderMaterial_ycdy4")
+position = Vector2(655.5225, 332.15955)
+texture = ExtResource("7_dg77c")
+
+[node name="Nose" type="Sprite2D" parent="MainCanvas/NPCTextures" unique_id=58799974]
+material = SubResource("ShaderMaterial_ycdy4")
+position = Vector2(656, 309)
+texture = ExtResource("6_dg77c")
+
+[node name="Eyes" type="Sprite2D" parent="MainCanvas/NPCTextures" unique_id=578708572]
+material = SubResource("ShaderMaterial_ycdy4")
+position = Vector2(643, 273)
+texture = ExtResource("7_ycdy4")
+
+[node name="Mouth" type="Sprite2D" parent="MainCanvas/NPCTextures" unique_id=812755756]
+material = SubResource("ShaderMaterial_ycdy4")
+position = Vector2(653, 363)
+texture = ExtResource("8_w48qg")
+
+[node name="Table" type="Sprite2D" parent="MainCanvas/NPCTextures" unique_id=1475067596]
+material = SubResource("ShaderMaterial_ycdy4")
+position = Vector2(640, 360)
+texture = ExtResource("3_h2yge")
+
+[node name="Hand" type="Sprite2D" parent="MainCanvas/NPCTextures" unique_id=1005896850]
+material = SubResource("ShaderMaterial_ycdy4")
+position = Vector2(632, 362)
+texture = ExtResource("5_lquwl")
+
+[connection signal="pressed" from="MainCanvas/MainControl/Buttons/BottomRight/VBoxContainer/Shuffle Button" to="MainCanvas/MainControl/Buttons/BottomRight" method="_on_shuffle_button_pressed"]
+[connection signal="pressed" from="MainCanvas/MainControl/Buttons/BottomRight/VBoxContainer/Almanac Button2" to="MainCanvas/MainControl/Buttons/BottomRight" method="_on_almanac_button_pressed"]
