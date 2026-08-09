@@ -11,14 +11,14 @@ config_version=5
 [application]
 
 config/name="Star Match (GoEdwareJam)"
-run/main_scene="uid://bocyxixfmquy2"
+run/main_scene="uid://b4kywdqkwvgf5"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
 CursorManager="*res://Scripts/cursor_manager.gd"
-StarBank="*uid://dt102ga1tk4kd"
+GameState="*uid://bt2l88ym3f8mr"
 
 [display]
 

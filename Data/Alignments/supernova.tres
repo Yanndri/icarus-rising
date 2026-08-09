@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CosmicAlignment" format=3 uid="uid://7xmjr635xoek"]
+
+[ext_resource type="Script" uid="uid://bhs1dnsuahm6i" path="res://Scripts/data/cosmic_alignment.gd" id="1_35bym"]
+
+[resource]
+script = ExtResource("1_35bym")
+display_name = "Type Ia Supernova"
+description = "Volatile and explosive outburst of productivity followed by immediate burnout and emotional apathy."
+required_clues = Array[String](["singed_scorched_clothes", "twitchy_fast_hands", "born_under_sudden_sky_flash"])
+metadata/_custom_type_script = "uid://bhs1dnsuahm6i"

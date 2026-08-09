@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="SkyEvent" format=3 uid="uid://cn3lhlnjv7n3s"]
+
+[ext_resource type="Script" uid="uid://dvh6p42ogqb6y" path="res://Scripts/data/sky_event.gd" id="1_6pdxo"]
+
+[resource]
+script = ExtResource("1_6pdxo")
+display_name = "Coronal Mass Eruption"
+required_clues = Array[String](["in_the_east", "blindingly_bright_star", "surface_filament_arc"])
+metadata/_custom_type_script = "uid://dvh6p42ogqb6y"
