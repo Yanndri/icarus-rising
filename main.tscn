@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dykkscl2g7aa5" path="res://Assets/NPCTextures/Tables/GoedWareTable1.png" id="3_h2yge"]
 [ext_resource type="Shader" uid="uid://ws5f7h6gvm5d" path="res://Themes/replace_color.gdshader" id="4_dg77c"]
 [ext_resource type="Texture2D" uid="uid://bbdl6cblpyny5" path="res://Assets/NPCTextures/Hairs/hair2.png" id="5_efxa6"]
-[ext_resource type="Texture2D" uid="uid://cii8q6i1txnay" path="res://Assets/NPCTextures/Hands/hand1.png" id="5_lquwl"]
+[ext_resource type="Texture2D" uid="uid://cye3bv8o3gnqg" path="res://Assets/NPCTextures/Hands/hand1.png" id="5_lquwl"]
 [ext_resource type="Texture2D" uid="uid://c6fbhww6rviec" path="res://Assets/NPCTextures/Noses/Nose1.png" id="6_dg77c"]
 [ext_resource type="Texture2D" uid="uid://7g3ttw4jojrr" path="res://Assets/NPCTextures/Heads/head3.png" id="7_dg77c"]
 [ext_resource type="Texture2D" uid="uid://camdvs5xsk1g4" path="res://Assets/NPCTextures/Eyes/eyes1.png" id="7_ycdy4"]
@@ -25,8 +25,63 @@ func _on_almanac_button_pressed() -> void:
 
 
 func _on_shuffle_button_pressed() -> void:
-	get_node(\"../../../NPCTextures\").randomize_textures()
+	get_node(\"../../../NPCTextures\").new_NPC()
 "
+
+[sub_resource type="Shader" id="Shader_ycdy4"]
+code = "shader_type canvas_item;
+render_mode unshaded;
+
+uniform bool highlighted = false;
+
+uniform vec4 outline_color : source_color = vec4(1.0, 1.0, 0.2, 1.0);
+uniform float outline_width = 2.0;
+
+uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_nearest;
+
+void fragment() {
+	vec4 group_color = textureLod(screen_texture, SCREEN_UV, 0.0);
+
+	if (group_color.a > 0.0001) {
+		group_color.rgb /= group_color.a;
+	}
+
+	float surrounding_alpha = 0.0;
+
+	for (int x = -1; x <= 1; x++) {
+		for (int y = -1; y <= 1; y++) {
+			if (x == 0 && y == 0) {
+				continue;
+			}
+
+			vec2 offset = vec2(float(x), float(y))
+	* SCREEN_PIXEL_SIZE
+	* outline_width;
+			float neighbor_alpha = textureLod(
+				screen_texture,
+				SCREEN_UV + offset,
+				0.0
+			).a;
+
+			surrounding_alpha = max(surrounding_alpha, neighbor_alpha);
+		}
+	}
+
+	float is_outline = float(highlighted) * step(0.001, surrounding_alpha)
+		* (1.0 - step(0.001, group_color.a));
+
+	vec4 result = group_color;
+	result.rgb = mix(result.rgb, outline_color.rgb, is_outline);
+	result.a = max(result.a, is_outline * outline_color.a);
+
+	COLOR *= result;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dg77c"]
+shader = SubResource("Shader_ycdy4")
+shader_parameter/highlighted = false
+shader_parameter/outline_color = Color(1, 1, 0.2, 1)
+shader_parameter/outline_width = 2.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ycdy4"]
 shader = ExtResource("4_dg77c")
@@ -88,7 +143,36 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "Almanac"
 
+[node name="NPCDialogue" type="MarginContainer" parent="MainCanvas/MainControl" unique_id=2115093058]
+z_index = 51
+custom_minimum_size = Vector2(600, 240)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -270.0
+offset_right = 270.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="dialogue" type="RichTextLabel" parent="MainCanvas/MainControl/NPCDialogue" unique_id=171251189]
+visible = false
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/normal_font_size = 32
+bbcode_enabled = true
+text = "Shut up and just do my horoscopes"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 3
+
 [node name="NPCTextures" type="CanvasGroup" parent="MainCanvas" unique_id=1239891217]
+material = SubResource("ShaderMaterial_dg77c")
 script = ExtResource("9_npc_randomizer")
 
 [node name="Torso" type="Sprite2D" parent="MainCanvas/NPCTextures" unique_id=1511716083]
@@ -122,15 +206,21 @@ material = SubResource("ShaderMaterial_ycdy4")
 position = Vector2(653, 363)
 texture = ExtResource("8_w48qg")
 
-[node name="Table" type="Sprite2D" parent="MainCanvas/NPCTextures" unique_id=1475067596]
+[node name="Hand" type="Sprite2D" parent="MainCanvas/NPCTextures" unique_id=1005896850]
+unique_name_in_owner = true
+visible = false
+z_index = 50
+material = SubResource("ShaderMaterial_ycdy4")
+position = Vector2(809, 624)
+texture = ExtResource("5_lquwl")
+
+[node name="Background" type="CanvasGroup" parent="MainCanvas" unique_id=1702796927]
+
+[node name="Table" type="Sprite2D" parent="MainCanvas/Background" unique_id=1475067596]
+z_index = 49
 material = SubResource("ShaderMaterial_ycdy4")
 position = Vector2(640, 360)
 texture = ExtResource("3_h2yge")
-
-[node name="Hand" type="Sprite2D" parent="MainCanvas/NPCTextures" unique_id=1005896850]
-material = SubResource("ShaderMaterial_ycdy4")
-position = Vector2(632, 362)
-texture = ExtResource("5_lquwl")
 
 [connection signal="pressed" from="MainCanvas/MainControl/Buttons/BottomRight/VBoxContainer/Shuffle Button" to="MainCanvas/MainControl/Buttons/BottomRight" method="_on_shuffle_button_pressed"]
 [connection signal="pressed" from="MainCanvas/MainControl/Buttons/BottomRight/VBoxContainer/Almanac Button2" to="MainCanvas/MainControl/Buttons/BottomRight" method="_on_almanac_button_pressed"]
