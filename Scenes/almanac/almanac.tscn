@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://ba5mh6xnkqk04"]
+
+[ext_resource type="PackedScene" uid="uid://bw3gsqxfmuow7" path="res://Scenes/almanac/almanac_page.tscn" id="1_xhl3i"]
+[ext_resource type="Texture2D" uid="uid://cu35geja5uyw8" path="res://Assets/Ui/Almanac/bookmark.png" id="2_kkiol"]
+[ext_resource type="Script" uid="uid://cqyp73mct6maq" path="res://Scripts/ui/almanac/page_switch.gd" id="4_ud115"]
+[ext_resource type="FontFile" uid="uid://dfy6gj18e5opf" path="res://Assets/fonts/hand2.ttf" id="5_wotfa"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_8vrlf"]
+font = ExtResource("5_wotfa")
+font_size = 19
+font_color = Color(0, 0, 0, 1)
+
+[node name="Almanac" type="Control" unique_id=758019077]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TabContainer" type="TabContainer" parent="." unique_id=402835461]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 40.0
+current_tab = 0
+tabs_visible = false
+
+[node name="AlignmentPage" parent="TabContainer" unique_id=1728347914 instance=ExtResource("1_xhl3i")]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="EventPage" parent="TabContainer" unique_id=1026465451 instance=ExtResource("1_xhl3i")]
+visible = false
+layout_mode = 2
+page_mode = 1
+metadata/_tab_index = 1
+
+[node name="AlignmentTabButton" type="TextureButton" parent="." unique_id=1404466381]
+layout_mode = 0
+offset_left = 143.0
+offset_top = 103.0
+offset_right = 271.0
+offset_bottom = 167.0
+texture_normal = ExtResource("2_kkiol")
+stretch_mode = 0
+script = ExtResource("4_ud115")
+target_tab_container = NodePath("../TabContainer")
+
+[node name="Label" type="Label" parent="AlignmentTabButton" unique_id=944069362]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 22.0
+offset_right = 150.0
+offset_bottom = 50.0
+text = "Alignment"
+label_settings = SubResource("LabelSettings_8vrlf")
+
+[node name="EventTabButton" type="TextureButton" parent="." unique_id=2044964063]
+layout_mode = 0
+offset_left = 143.0
+offset_top = 165.0
+offset_right = 271.0
+offset_bottom = 229.0
+texture_normal = ExtResource("2_kkiol")
+stretch_mode = 0
+script = ExtResource("4_ud115")
+target_tab_container = NodePath("../TabContainer")
+tab_index = 1
+
+[node name="Label" type="Label" parent="EventTabButton" unique_id=2141976639]
+layout_mode = 0
+offset_left = 42.0
+offset_top = 23.0
+offset_right = 97.0
+offset_bottom = 51.0
+text = "Event"
+label_settings = SubResource("LabelSettings_8vrlf")

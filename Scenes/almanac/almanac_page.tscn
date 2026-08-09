@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://bw3gsqxfmuow7"]
 
 [ext_resource type="Theme" uid="uid://dn5rpshj3jm0g" path="res://Assets/fonts/almanac_text_theme.tres" id="1_f7wfu"]
-[ext_resource type="Script" uid="uid://n7iwucg5wrt8" path="res://Scripts/ui/almanac_page.gd" id="1_nnki8"]
-[ext_resource type="Texture2D" uid="uid://ra5n1xnpsp6" path="res://Assets/Ui/booky.png" id="2_q4k0i"]
+[ext_resource type="Script" uid="uid://n7iwucg5wrt8" path="res://Scripts/ui/almanac/almanac_page.gd" id="1_nnki8"]
+[ext_resource type="Texture2D" uid="uid://ra5n1xnpsp6" path="res://Assets/Ui/Almanac/booky.png" id="2_q4k0i"]
 [ext_resource type="FontFile" uid="uid://dfy6gj18e5opf" path="res://Assets/fonts/hand2.ttf" id="3_wjlyb"]
 [ext_resource type="LabelSettings" uid="uid://dt78b1es013dt" path="res://Data/fonts/Black40PXhandwritten.tres" id="4_f2qqr"]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ra5n1xnpsp6"
-path="res://.godot/imported/booky.png-90f92de576ef184bb186a517c2e0e50e.ctex"
+uid="uid://cu35geja5uyw8"
+path="res://.godot/imported/bookmark.png-6c23ec7877a02e9a7c15783c23de1c80.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Ui/booky.png"
-dest_files=["res://.godot/imported/booky.png-90f92de576ef184bb186a517c2e0e50e.ctex"]
+source_file="res://Assets/Ui/Almanac/bookmark.png"
+dest_files=["res://.godot/imported/bookmark.png-6c23ec7877a02e9a7c15783c23de1c80.ctex"]
 
 [params]
 
