@@ -1,0 +1,8 @@
+[gd_resource type="LabelSettings" format=3 uid="uid://dt78b1es013dt"]
+
+[ext_resource type="FontFile" uid="uid://pevnfl22fqjw" path="res://Assets/fonts/hand2.ttf" id="1_0wktk"]
+
+[resource]
+font = ExtResource("1_0wktk")
+font_size = 40
+font_color = Color(0, 0, 0, 1)

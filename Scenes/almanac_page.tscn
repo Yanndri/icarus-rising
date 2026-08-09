@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://n7iwucg5wrt8" path="res://Scripts/ui/almanac_page.gd" id="1_nnki8"]
 [ext_resource type="Texture2D" uid="uid://ra5n1xnpsp6" path="res://Assets/Ui/booky.png" id="2_q4k0i"]
 [ext_resource type="FontFile" uid="uid://pevnfl22fqjw" path="res://Assets/fonts/hand2.ttf" id="3_wjlyb"]
+[ext_resource type="LabelSettings" uid="uid://dt78b1es013dt" path="res://Data/fonts/Black40PXhandwritten.tres" id="4_f2qqr"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_q4k0i"]
 font = ExtResource("3_wjlyb")
@@ -25,10 +26,10 @@ script = ExtResource("1_nnki8")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=650115472]
 layout_mode = 0
-offset_left = 90.0
-offset_top = 76.0
-offset_right = 1209.0
-offset_bottom = 621.0
+offset_left = 97.0
+offset_top = 55.0
+offset_right = 1216.0
+offset_bottom = 600.0
 texture = ExtResource("2_q4k0i")
 expand_mode = 1
 
@@ -37,7 +38,7 @@ layout_mode = 0
 offset_left = 224.0
 offset_top = 59.0
 offset_right = 520.0
-offset_bottom = 108.0
+offset_bottom = 294.0
 metadata/_edit_group_ = true
 
 [node name="Label" type="Label" parent="TextureRect/ClueColumn" unique_id=688602402]
@@ -48,18 +49,18 @@ autowrap_trim_flags = 128
 
 [node name="ScrollContainer" type="ScrollContainer" parent="TextureRect/ClueColumn" unique_id=1377720438]
 layout_mode = 2
+size_flags_vertical = 3
 
-[node name="ClueList" type="VBoxContainer" parent="TextureRect/ClueColumn/ScrollContainer" unique_id=1752623593]
+[node name="ClueList" type="HFlowContainer" parent="TextureRect/ClueColumn/ScrollContainer" unique_id=194414000]
 unique_name_in_owner = true
 layout_mode = 2
 
 [node name="CandidateColumn" type="VBoxContainer" parent="TextureRect" unique_id=1129858011]
 layout_mode = 0
-offset_left = 612.0
-offset_top = 64.0
-offset_right = 925.0
-offset_bottom = 147.0
-metadata/_edit_group_ = true
+offset_left = 604.0
+offset_top = 59.0
+offset_right = 917.0
+offset_bottom = 481.0
 
 [node name="Label" type="Label" parent="TextureRect/CandidateColumn" unique_id=1738349924]
 layout_mode = 2
@@ -67,11 +68,21 @@ text = "Possible Matches
 "
 label_settings = SubResource("LabelSettings_wjlyb")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="TextureRect/CandidateColumn/Label" unique_id=1225543252]
-layout_mode = 0
-offset_left = -125.0
-offset_right = -125.0
+[node name="ScrollContainer" type="ScrollContainer" parent="TextureRect/CandidateColumn" unique_id=1225543252]
+layout_mode = 2
+size_flags_vertical = 3
+offset_transform_position = Vector2(0, 100)
 
-[node name="CandidateList" type="VBoxContainer" parent="TextureRect/CandidateColumn/Label/ScrollContainer" unique_id=1647869596]
+[node name="CandidateList" type="VBoxContainer" parent="TextureRect/CandidateColumn/ScrollContainer" unique_id=1647869596]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="DescriptionLabel" type="Label" parent="TextureRect" unique_id=235657644]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 212.0
+offset_top = 323.0
+offset_right = 543.0
+offset_bottom = 490.0
+label_settings = ExtResource("4_f2qqr")
+autowrap_mode = 3

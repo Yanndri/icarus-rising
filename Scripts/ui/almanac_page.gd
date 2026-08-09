@@ -1,21 +1,23 @@
 extends Control
-
+# same here, I dont really like commenting when Im in the flow~~~
 enum PageMode { BEHAVIOR, SKY }
 
 @export var page_mode: PageMode = PageMode.BEHAVIOR
 @export var clue_ids: Array[String] = []
 @export var clue_names: Array[String] = []
+@export var clue_descriptions: Array[String] = []
 
-@onready var _clue_list: VBoxContainer = %ClueList
-@onready var _candidate_list: VBoxContainer = %CandidateList
+@onready var _clue_list: Container = %ClueList
+@onready var _candidate_list: Container = %CandidateList
+@onready var _description_label: Label = %DescriptionLabel
 
 
 func _ready() -> void:
 	if clue_ids.is_empty():
 		_use_default_clue_pool()
-	_build_clue_checkboxes()
+	_build_clue_buttons()
 	_refresh_candidates()
-	GameState.clue_discovered.connect(_on_clue_discovered)
+	GameState.clue_state_changed.connect(_on_clue_state_changed)
 
 
 func _use_default_clue_pool() -> void:
@@ -27,27 +29,30 @@ func _use_default_clue_pool() -> void:
 		clue_names = ClueDefinitions.SKY_CLUE_NAMES
 
 
-func _build_clue_checkboxes() -> void:
+func _build_clue_buttons() -> void:
 	for child in _clue_list.get_children():
 		child.queue_free()
 	for i in clue_ids.size():
-		var checkbox := CheckBox.new()
-		checkbox.text = clue_names[i]
-		checkbox.toggled.connect(_on_clue_checkbox_toggled.bind(clue_ids[i]))
-		_clue_list.add_child(checkbox)
+		var button := ClueButton.new()
+		button.clue_id = clue_ids[i]
+		button.base_text = clue_names[i]
+		button.description = clue_descriptions[i] if i < clue_descriptions.size() else clue_names[i]
+		button.hovered.connect(func(desc): _description_label.text = desc)
+		button.unhovered.connect(func(): _description_label.text = "")
+		button.state_changed.connect(_on_clue_button_state_changed.bind(button))
+		_clue_list.add_child(button)
 
 
-func _on_clue_checkbox_toggled(is_checked: bool, clue_id: String) -> void:
-	if not is_checked:
-		return
+func _on_clue_button_state_changed(button: ClueButton) -> void:
 	if page_mode == PageMode.BEHAVIOR:
-		GameState.discover_behavior_clue(clue_id)
+		GameState.set_behavior_clue_state(button.clue_id, button.state)
 	else:
-		GameState.discover_sky_clue(clue_id)
+		GameState.set_sky_clue_state(button.clue_id, button.state)
 
 
-func _on_clue_discovered(_clue_id: String) -> void:
-	_refresh_candidates()
+func _on_clue_state_changed(_clue_id: String, is_behavior: bool) -> void:
+	if is_behavior == (page_mode == PageMode.BEHAVIOR):
+		_refresh_candidates()
 
 
 func _refresh_candidates() -> void:
@@ -65,7 +70,7 @@ func _refresh_candidates() -> void:
 			else candidate == GameState.current_event
 		)
 		if is_locked:
-			label.text += "  \u2713 LOCKED"
+			label.text += "  ✓ LOCKED"
 			label.add_theme_color_override("font_color", Color.LIME_GREEN)
 		_candidate_list.add_child(label)
 	if candidates.is_empty():

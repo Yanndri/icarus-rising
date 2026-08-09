@@ -1,6 +1,6 @@
 class_name ClueDefinitions
 extends RefCounted
-
+# I did not write this, I automated the process iwth ai cuz Im a lazy bum
 const BEHAVIOR_CLUE_IDS: Array[String] = [
 	"pale_skin", "monotone_voice", "twitchy_fast_hands", "heavy_dark_clothing",
 	"singed_scorched_clothes", "restless_foot_tapping", "ink_stained_hands",
