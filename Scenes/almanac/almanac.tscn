@@ -136,6 +136,10 @@ offset_left = 500.0
 offset_top = 241.0
 offset_right = 812.0
 offset_bottom = 378.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_wotfa")
+theme_override_font_sizes/font_size = 25
+autowrap_mode = 3
 
 [node name="SelectionStatusLabel" type="Label" parent="." unique_id=1231751893]
 unique_name_in_owner = true

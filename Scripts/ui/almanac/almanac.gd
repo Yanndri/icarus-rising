@@ -58,7 +58,7 @@ func _on_submit_pressed() -> void:
 		return
 	var alignment := GameState.get_selected_alignment()
 	var sky_event := GameState.get_selected_event()
-	_confirmation_label.text = "Are you sure about this:\nAlignment: %s\nCosmic Event: %s" % [
+	_confirmation_label.text = "Alignment: %s\n\nCosmic Event: %s" % [
 		alignment.display_name, sky_event.display_name
 	]
 	_confirmation_overlay.visible = true
