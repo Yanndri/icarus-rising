@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CosmicAlignment" format=3 uid="uid://l5cvhhcl2j4l"]
+
+[ext_resource type="Script" uid="uid://bhs1dnsuahm6i" path="res://Scripts/data/cosmic_alignment.gd" id="1_2cyo8"]
+
+[resource]
+script = ExtResource("1_2cyo8")
+display_name = "Emission Nebula"
+description = "Unfocused dreamer, poetic, scattered thoughts, drifts away mid-sentence."
+required_clues = Array[String](["ink_stained_hands", "restless_foot_tapping", "born_under_violet_sky_haze"])
+metadata/_custom_type_script = "uid://bhs1dnsuahm6i"

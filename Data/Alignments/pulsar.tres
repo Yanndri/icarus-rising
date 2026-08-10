@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="CosmicAlignment" format=3 uid="uid://c2jgbmegon474"]
+
+[ext_resource type="Script" uid="uid://bhs1dnsuahm6i" path="res://Scripts/data/cosmic_alignment.gd" id="1_35npn"]
+
+[resource]
+script = ExtResource("1_35npn")
+display_name = "Pulsar"
+description = "Obsessive,compulsive, rigid routine, hyper-focused, speaks in steady rhythmic bursts.
+"
+required_clues = Array[String](["monotone_voice", "restless_foot_tapping", "born_under_sudden_sky_flashborn_under_sudden_sky_flash"])
+metadata/_custom_type_script = "uid://bhs1dnsuahm6i"

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="CosmicAlignment" format=3 uid="uid://chpt5ts3co3q4"]
+
+[ext_resource type="Script" uid="uid://bhs1dnsuahm6i" path="res://Scripts/data/cosmic_alignment.gd" id="1_i2qkd"]
+
+[resource]
+script = ExtResource("1_i2qkd")
+display_name = "Gamma Burst"
+description = "Ruthlessly ambitious, hyper-fixated on a single goal, cuts off relationships without hesitation. Decisvice
+
+"
+required_clues = Array[String](["piercing_unblinking_gaze", "singed_scorched_clothes", "born_under_violet_sky_haze"])
+metadata/_custom_type_script = "uid://bhs1dnsuahm6i"

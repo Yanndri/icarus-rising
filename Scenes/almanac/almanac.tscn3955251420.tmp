@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ba5mh6xnkqk04"]
 
-[ext_resource type="Script" uid="uid://dssr8vyjqdlqu" path="res://Scripts/ui/almanac/almanac.gd" id="1_2cn0k"]
+[ext_resource type="Script" uid="uid://dssr8vyjqdlqu" path="res://Scenes/almanac/almanac.gd" id="1_2cn0k"]
 [ext_resource type="PackedScene" uid="uid://bw3gsqxfmuow7" path="res://Scenes/almanac/almanac_page.tscn" id="1_xhl3i"]
 [ext_resource type="Texture2D" uid="uid://cu35geja5uyw8" path="res://Assets/Ui/Almanac/bookmark.png" id="2_kkiol"]
 [ext_resource type="Script" uid="uid://cqyp73mct6maq" path="res://Scripts/ui/almanac/page_switch.gd" id="4_ud115"]
@@ -109,42 +109,27 @@ offset_right = 888.0
 offset_bottom = 523.0
 texture = ExtResource("6_1gugw")
 
-[node name="XButton" type="TextureButton" parent="ConfirmationOverlay" unique_id=477328041]
+[node name="CheckButton" type="TextureButton" parent="ConfirmationOverlay/PopupBackground" unique_id=245866979]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 470.0
-offset_top = 384.0
-offset_right = 629.0
-offset_bottom = 470.0
-texture_normal = ExtResource("8_2cn0k")
-stretch_mode = 0
-
-[node name="CheckButton" type="TextureButton" parent="ConfirmationOverlay" unique_id=245866979]
-unique_name_in_owner = true
-layout_mode = 0
-offset_left = 664.0
-offset_top = 384.0
-offset_right = 824.0
-offset_bottom = 474.0
+offset_left = 256.0
+offset_top = 281.0
+offset_right = 416.0
+offset_bottom = 371.0
 texture_normal = ExtResource("7_w6ynk")
 stretch_mode = 0
 
-[node name="ConfirmationLabel" type="Label" parent="ConfirmationOverlay" unique_id=968163199]
+[node name="XButton" type="TextureButton" parent="ConfirmationOverlay/PopupBackground" unique_id=477328041]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 500.0
-offset_top = 241.0
-offset_right = 812.0
-offset_bottom = 378.0
+offset_left = 62.0
+offset_top = 281.0
+offset_right = 221.0
+offset_bottom = 367.0
+texture_normal = ExtResource("8_2cn0k")
+stretch_mode = 0
 
-[node name="SelectionStatusLabel" type="Label" parent="." unique_id=1231751893]
-unique_name_in_owner = true
+[node name="Confirmation Label" type="Label" parent="ConfirmationOverlay" unique_id=968163199]
 layout_mode = 0
-offset_left = 1079.0
-offset_top = 91.0
-offset_right = 1269.0
-offset_bottom = 581.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("5_wotfa")
-theme_override_font_sizes/font_size = 25
-autowrap_mode = 3
+offset_right = 40.0
+offset_bottom = 23.0

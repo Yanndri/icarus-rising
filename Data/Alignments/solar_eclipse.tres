@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CosmicAlignment" format=3 uid="uid://bnd4t2iydh0hs"]
+
+[ext_resource type="Script" uid="uid://bhs1dnsuahm6i" path="res://Scripts/data/cosmic_alignment.gd" id="1_nridn"]
+
+[resource]
+script = ExtResource("1_nridn")
+display_name = "Solar Eclips"
+description = "Secretive and quiet. emotionally cold and hoard-prone"
+required_clues = Array[String](["pale_skin", "heavy_dark_clothing", "born_under_pitch_darkness"])
+metadata/_custom_type_script = "uid://bhs1dnsuahm6i"

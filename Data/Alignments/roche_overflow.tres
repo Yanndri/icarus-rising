@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CosmicAlignment" format=3 uid="uid://rpbwu76gr23o"]
+
+[ext_resource type="Script" uid="uid://bhs1dnsuahm6i" path="res://Scripts/data/cosmic_alignment.gd" id="1_govsy"]
+
+[resource]
+script = ExtResource("1_govsy")
+display_name = "Roche Overflow"
+description = "Parasitic/dependent in relationships, constant internal conflict and shifting moods."
+required_clues = Array[String](["twitchy_fast_hands", "heavy_dark_clothing", "born_under_twin_celestial_lights"])
+metadata/_custom_type_script = "uid://bhs1dnsuahm6i"

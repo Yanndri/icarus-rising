@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CosmicAlignment" format=3 uid="uid://cwdny7g7tdtix"]
+
+[ext_resource type="Script" uid="uid://bhs1dnsuahm6i" path="res://Scripts/data/cosmic_alignment.gd" id="1_8hn6d"]
+
+[resource]
+script = ExtResource("1_8hn6d")
+display_name = "White Dwarf"
+description = "Unshakeably stubborn, cold, stoic to a fault."
+required_clues = Array[String](["pale_skin", "monotone_voice", "born_under_pitch_darkness"])
+metadata/_custom_type_script = "uid://bhs1dnsuahm6i"

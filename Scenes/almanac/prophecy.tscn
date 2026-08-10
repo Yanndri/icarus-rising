@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://wdareu6oa4vr"]
+
+[ext_resource type="Script" uid="uid://b8n7hwpx5ayli" path="res://Scripts/ui/almanac/prophecy.gd" id="1_3tr5u"]
+[ext_resource type="FontFile" uid="uid://dfy6gj18e5opf" path="res://Assets/fonts/hand2.ttf" id="2_1qtb8"]
+
+[node name="Prophecy" type="Control" unique_id=683149141]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3tr5u")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=320763543]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ProphecyLabel" type="Label" parent="TextureRect" unique_id=1335436213]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 297.0
+offset_top = 120.0
+offset_right = 927.0
+offset_bottom = 530.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_1qtb8")

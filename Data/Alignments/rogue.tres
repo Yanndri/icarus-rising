@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CosmicAlignment" format=3 uid="uid://bxc4v1ivrggkn"]
+
+[ext_resource type="Script" uid="uid://bhs1dnsuahm6i" path="res://Scripts/data/cosmic_alignment.gd" id="1_4u8tt"]
+
+[resource]
+script = ExtResource("1_4u8tt")
+display_name = "Rogue"
+description = "Restless wanderer, leaves broken promises behind, unable to sit still or settle down."
+required_clues = Array[String](["restless_foot_tapping", "born_under_streaking_fireball", "born_under_violet_sky_haze"])
+metadata/_custom_type_script = "uid://bhs1dnsuahm6i"

@@ -1,25 +1,24 @@
 extends Control
-# same here, I dont really like commenting when Im in the flow~~~
+
 enum PageMode { BEHAVIOR, SKY }
 
 @export var page_mode: PageMode = PageMode.BEHAVIOR
 @export var clue_ids: Array[String] = []
 @export var clue_names: Array[String] = []
 @export var clue_descriptions: Array[String] = []
-
 @export var clue_images: Array[Texture2D] = []
-@onready var _description_image: TextureRect = %DescriptionImage
 
 @onready var _clue_list: Container = %ClueList
 @onready var _candidate_list: Container = %CandidateList
 @onready var _description_label: Label = %DescriptionLabel
+@onready var _description_image: TextureRect = %DescriptionImage
 
 
 func _ready() -> void:
 	if clue_ids.is_empty():
 		_use_default_clue_pool()
 	_build_clue_buttons()
-	_refresh_candidates()
+	_build_candidate_buttons()
 	GameState.clue_state_changed.connect(_on_clue_state_changed)
 
 
@@ -62,31 +61,35 @@ func _on_clue_button_state_changed(button: ClueButton) -> void:
 		GameState.set_sky_clue_state(button.clue_id, button.state)
 
 
-func _on_clue_state_changed(_clue_id: String, is_behavior: bool) -> void:
-	if is_behavior == (page_mode == PageMode.BEHAVIOR):
-		_refresh_candidates()
-
-
-func _refresh_candidates() -> void:
+func _build_candidate_buttons() -> void:
 	for child in _candidate_list.get_children():
 		child.queue_free()
+	var source: Array = GameState.all_alignments if page_mode == PageMode.BEHAVIOR else GameState.all_events
+	for item in source:
+		var button := CandidateButton.new()
+		button.candidate = item
+		button.state_changed.connect(_on_candidate_button_state_changed.bind(button))
+		_candidate_list.add_child(button)
+	_refresh_candidate_styles()
+
+
+func _on_candidate_button_state_changed(button: CandidateButton) -> void:
+	if page_mode == PageMode.BEHAVIOR:
+		GameState.set_alignment_state(button.candidate, button.state)
+	else:
+		GameState.set_event_state(button.candidate, button.state)
+
+
+func _on_clue_state_changed(_clue_id: String, is_behavior: bool) -> void:
+	if is_behavior == (page_mode == PageMode.BEHAVIOR):
+		_refresh_candidate_styles()
+
+
+func _refresh_candidate_styles() -> void:
 	var candidates: Array = (
 		GameState.get_candidate_alignments() if page_mode == PageMode.BEHAVIOR
 		else GameState.get_candidate_events()
 	)
-	for candidate in candidates:
-		var label := Label.new()
-		label.text = candidate.display_name
-		var is_locked: bool = (
-			candidate == GameState.current_alignment if page_mode == PageMode.BEHAVIOR
-			else candidate == GameState.current_event
-		)
-		if is_locked:
-			label.text += "  ✓ LOCKED"
-			label.add_theme_color_override("font_color", Color.LIME_GREEN)
-		_candidate_list.add_child(label)
-	if candidates.is_empty():
-		var none_label := Label.new()
-		none_label.text = "(no matches yet)"
-		none_label.modulate = Color(1, 1, 1, 0.5)
-		_candidate_list.add_child(none_label)
+	for button in _candidate_list.get_children():
+		if button is CandidateButton:
+			button.set_filtered_out(button.candidate not in candidates)

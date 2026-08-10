@@ -1,10 +1,9 @@
 extends Node
-#I was gonna comment and shit but I forgot
+
 signal clue_state_changed(clue_id: String, is_behavior: bool)
-signal alignment_locked(alignment: CosmicAlignment)
-signal event_locked(sky_event: SkyEvent)
-signal alignment_unlocked
-signal event_unlocked
+signal alignment_selection_changed
+signal event_selection_changed
+signal diagnosis_submitted(alignment: CosmicAlignment, sky_event: SkyEvent)
 
 @export var alignments_directory := "res://Data/Alignments"
 @export var events_directory := "res://Data/Events"
@@ -17,8 +16,10 @@ var ruled_out_behavior_clues: Array[String] = []
 var selected_sky_clues: Array[String] = []
 var ruled_out_sky_clues: Array[String] = []
 
-var current_alignment: CosmicAlignment = null
-var current_event: SkyEvent = null
+var selected_alignments: Array[CosmicAlignment] = []
+var ruled_out_alignments: Array[CosmicAlignment] = []
+var selected_events: Array[SkyEvent] = []
+var ruled_out_events: Array[SkyEvent] = []
 
 
 func _ready() -> void:
@@ -27,7 +28,6 @@ func _ready() -> void:
 	print("GameState ready: %d alignments, %d events loaded." % [all_alignments.size(), all_events.size()])
 
 
-## state should be a ClueButton.ClueState value (0=NONE, 1=SELECTED, 2=RULED_OUT)
 func set_behavior_clue_state(clue_id: String, state: int) -> void:
 	selected_behavior_clues.erase(clue_id)
 	ruled_out_behavior_clues.erase(clue_id)
@@ -36,7 +36,6 @@ func set_behavior_clue_state(clue_id: String, state: int) -> void:
 	elif state == 2:
 		ruled_out_behavior_clues.append(clue_id)
 	clue_state_changed.emit(clue_id, true)
-	_refresh_alignment_lock()
 
 
 func set_sky_clue_state(clue_id: String, state: int) -> void:
@@ -47,7 +46,43 @@ func set_sky_clue_state(clue_id: String, state: int) -> void:
 	elif state == 2:
 		ruled_out_sky_clues.append(clue_id)
 	clue_state_changed.emit(clue_id, false)
-	_refresh_event_lock()
+
+
+func set_alignment_state(alignment: CosmicAlignment, state: int) -> void:
+	selected_alignments.erase(alignment)
+	ruled_out_alignments.erase(alignment)
+	if state == 1:
+		selected_alignments.append(alignment)
+	elif state == 2:
+		ruled_out_alignments.append(alignment)
+	alignment_selection_changed.emit()
+
+
+func set_event_state(sky_event: SkyEvent, state: int) -> void:
+	selected_events.erase(sky_event)
+	ruled_out_events.erase(sky_event)
+	if state == 1:
+		selected_events.append(sky_event)
+	elif state == 2:
+		ruled_out_events.append(sky_event)
+	event_selection_changed.emit()
+
+
+func can_submit() -> bool:
+	return selected_alignments.size() == 1 and selected_events.size() == 1
+
+
+func get_selected_alignment() -> CosmicAlignment:
+	return selected_alignments[0] if selected_alignments.size() == 1 else null
+
+
+func get_selected_event() -> SkyEvent:
+	return selected_events[0] if selected_events.size() == 1 else null
+
+
+func submit_diagnosis() -> void:
+	if can_submit():
+		diagnosis_submitted.emit(get_selected_alignment(), get_selected_event())
 
 
 func start_new_visitor() -> void:
@@ -55,8 +90,10 @@ func start_new_visitor() -> void:
 	ruled_out_behavior_clues.clear()
 	selected_sky_clues.clear()
 	ruled_out_sky_clues.clear()
-	current_alignment = null
-	current_event = null
+	selected_alignments.clear()
+	ruled_out_alignments.clear()
+	selected_events.clear()
+	ruled_out_events.clear()
 
 
 func get_candidate_alignments() -> Array[CosmicAlignment]:
@@ -83,28 +120,6 @@ func _is_candidate(selected_clues: Array[String], ruled_out_clues: Array[String]
 		if clue in required_clues:
 			return false
 	return true
-
-
-func _refresh_alignment_lock() -> void:
-	var candidates := get_candidate_alignments()
-	if candidates.size() == 1 and candidates[0].matches(selected_behavior_clues):
-		if current_alignment != candidates[0]:
-			current_alignment = candidates[0]
-			alignment_locked.emit(current_alignment)
-	elif current_alignment != null:
-		current_alignment = null
-		alignment_unlocked.emit()
-
-
-func _refresh_event_lock() -> void:
-	var candidates := get_candidate_events()
-	if candidates.size() == 1 and candidates[0].matches(selected_sky_clues):
-		if current_event != candidates[0]:
-			current_event = candidates[0]
-			event_locked.emit(current_event)
-	elif current_event != null:
-		current_event = null
-		event_unlocked.emit()
 
 
 func _load_resources_of_type(directory_path: String, expected_type: Script) -> Array:
